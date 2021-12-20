@@ -2,7 +2,7 @@
 Performing and assessing areal interpolation methods using Tobler
 
 
-* Ottawa census tracts (`data/ottawa_ct_pop_2016.gpkg`)
+* **Ottawa census tracts (`data/ottawa_ct_pop_2016.gpkg`)**
   * Geometry source: 
     * [StatCan 2016 Census: Census Tracts Cartographic Boundary File](https://www12.statcan.gc.ca/census-recensement/2011/geo/bound-limit/bound-limit-2016-eng.cfm)
   * Geometry transformations:
@@ -15,7 +15,7 @@ Performing and assessing areal interpolation methods using Tobler
     * Joined to the census tracts geometry
 
 
-* Ottawa dissemination areas (`data/ottawa_da_pop_2016.gpkg`)
+* **Ottawa dissemination areas (`data/ottawa_da_pop_2016.gpkg`)**
   * Geometry source: 
     * [StatCan 2016 Census: Dissemination Areas Cartographic Boundary File](https://www12.statcan.gc.ca/census-recensement/2011/geo/bound-limit/bound-limit-2016-eng.cfm)
   * Geometry transformations:
@@ -27,7 +27,7 @@ Performing and assessing areal interpolation methods using Tobler
     * Extracted the 'Population, 2016' data ('member ID 1) for the City of Ottawa dissemination areas
     * Joined to the dissemination areas geometry
 
-* Ottawa neighborhoods
+* **Ottawa neighborhoods**
   * Source:
     * [Ottawa Neighbourhood Study (ONS) - Neighbourhood Boundaries Gen 2](https://open.ottawa.ca/datasets/ottawa::ottawa-neighbourhood-study-ons-neighbourhood-boundaries-gen-2/about)
   * Geometry transformations:
