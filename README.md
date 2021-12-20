@@ -1,33 +1,40 @@
-# Areal Interpolation Tutorial
+# Areal Interpolation in Python using Tobler - A Jupyter Notebook Tutorial
 
-In this Jupyter Notebook tutorial we will look at two of the areal interpolation methods that are made possible by PySal's Tobler package.
-* What is areal interpolation?
-* What is a Jupyter Notebook etc?
-* What will we do?
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/johnofoster/areal_interpolation_tutorial/HEAD)
 
+Areal interpolation is the process where the attributes of one set of polygons are interpolated to a different set of polyons. There are many applications for this process, for example, the interpolation of census data from census tracts to neighborhoods.
 
+[Tobler](), a package within the Python Spatial Analysis Library (PySAL) is a package of Python functions designed to perform and support areal interpolation. Visit Tobler's [website](https://pysal.org/tobler/index.html) and [github page](https://github.com/pysal/tobler) for official documentation.
+
+In this tutorial we will use Tobler to perform two different methods of areal interpolation on two different scales of source data. We will begin by using areal weighted and dasymetric methods to interpolate 2016 Canadian census data from both census tracts and dissemination areas to Ottawa neighborhoods. After assessing the results, we will then generate and interpolate synthetic population data. By using synthetic data we can know exactly what the results should be and thus more accurately assess the effect of the methods and scale on the results.
+
+The intended audience are students who have some pior experience using Python, Jupyter Notebooks, Pandas, and GeoPandas. That being said, the code should work as-is, providing all students with the opportunity to follow along through the steps of the analysis, regardless of their coding ability.
+
+> **Disclaimer:** The tutorial and all related documents have been created as a school assignment for Carleton University's GEOM 4008 – Advanced Topics in Geographic Information Systems course. Please forgive any errors, whether simple typographic ones or more critical errors in logic or syntax. Whether you happened upon this document through its [github repository](https://github.com/johnofoster/areal_interpolation_tutorial) or Carleton University's [Open Source GIS Tutorials](https://dges.carleton.ca/CUOSGwiki/index.php/Main_Page) page and want to propose any changes, feel free to submit a pull request to this tutorial's github repository or find me at my [Twitter account](https://twitter.com/FrothyFoster).
 
 # Getting Started
 
-## Access a Remote Copy of the Tutorial
+There are a couple of different ways to view this tutorial. If you wish to interact with it by editing and running the code then the simplest method is through Binder. This service will allow you to run the tutorial notebook in JupyterLab without needing to download anything or creating an environemt. Alternatively, you can download the files from the gihub repository, set up the environment, and run the notebook locally. If a static copy of the tutorial is all you want then feel free to check it out at Carleton University's Open Source GIS Tutorials page. Here are the instructions for these three options:
 
-### Option 1: Binder
+## Option 1: Non-Interactive Copy
 
-If you wish to access an interactive copy of this tutorial please follow these instructions:
+As mentioned, this tutorial was created as a student project for a Carleton University geomatics course. It has been converted to a MediaWiki page and uploaded [here](https://dges.carleton.ca/CUOSGwiki/index.php/Areal_Interpolation_in_Python_using_Tobler).
 
-1. Click  on [this link](https://mybinder.org/v2/gh/johnofoster/areal_interpolation_tutorial/HEAD) and the tutorial's Binder splash page will open. 
-2. While it's loading, you can access a non-interactive preview of the notebook (`areal_interp_tutorial.ipynb`)through nbviewer, but it shouldn't take too long to start up.
-3. After loading, a JupyterLab session will launch in your browser. This session will use the environment created for the tutorial so all of the dependencies should work just fine.
+
+## Option 2: Run the Tutorial Through Binder 
+
+If you want to access an online interactive copy of this tutorial please follow these instructions:
+
+1. Open [this link](https://mybinder.org/v2/gh/johnofoster/areal_interpolation_tutorial/HEAD) in a new tab to access a Binder copy of the tutorial repository. 
+2. While the Binder service is loading, you can access a non-interactive preview of the notebook (`areal_interp_tutorial.ipynb`) through nbviewer at the bottom of the page.
+3. After loading, a JupyterLab session will launch in your browser. This session will use the tutorial environment so all dependencies should work.
 4. In the File Browser pane on the left, double-click `areal_interp_tutorial.ipynb` to open the tutorial notebook.
-5. With the tutorial now open as an interactive Jupyter notebook you can run and modify each code cell in order to see the output.
+5. With the tutorial now open as an interactive Jupyter notebook you can run and modify each code cell and any output.
 
 
-### Option 2: Carleton University Department of Geography and Environmental Studies Open Source GIS Tutorials Page
+## Option 3: Install a Local Copy of the Tutorial
 
-As previously mentioned, this tutorial was created as a student project for a Carleton University geomatics course. It has been converted to a MediaWiki page and uploaded [at this link](https://dges.carleton.ca/CUOSGwiki/index.php/Areal_Interpolation_in_Python_using_Tobler).
-
-
-## Install a Local Copy of the Tutorial
+### 1. Download the Files
 
 If you have git installed:
 
@@ -38,7 +45,7 @@ If you have git installed:
 
 Otherwise, simply download the zip file of the tutorial from [this link](https://github.com/johnofoster/areal_interpolation_tutorial/archive/refs/heads/main.zip) and unzip it into a suitable working directory on your computer.
 
-### Create Environment
+### 2. Create Environment
 
 This tutorial uses Python 3.9, Conda, JupyterLab, and a number of Python packages.
 
@@ -51,7 +58,7 @@ If you don't already have an Anaconda distribution then you can find it [here](h
 
 This will create a Conda environment containing the necessary packages to run this tutorial.
 
-### Open the Tutorial
+### 3. Open the Tutorial
 
 Now that you have downloaded the tutorial files and created the Conda environment please follow these instructions to launch it:
 
@@ -63,21 +70,21 @@ Now that you have downloaded the tutorial files and created the Conda environmen
 6. With the tutorial now open as an interactive Jupyter notebook you can run and modify each code cell in order to see the output.
 
 
-### Remove the Tutorial
+### 4. Remove the Tutorial
 
-Once you are done with tutorial you might want to remove it. Simply delete the directory you placed it in and then remove the Conda environment by running the following in the terminal: `$ conda env remove --name areal_interp_env`.
+Once you are done with tutorial you might want to remove it. Simply delete the directory you placed it in and then remove the Conda environment by running the following terminal command: `$ conda env remove --name areal_interp_env`.
 
 
 
 ## Tutorial Data
 
-The data for this tutorial has been preprocessed for your convenience and can be found in `data/`. All of this data comes from free and open sources. Links to the source geometry and attributes can be found below along with notes regarding the processing.
+The data for this tutorial has been preprocessed for your convenience and can be found in `data/`. All of this data comes from free and open sources. Links to the source geometry and attributes can be found below along with notes regarding the preprocessing that was performed.
 
-| a                   | Geometry source                                                                                                                                                                  | Geometry transformations                                                                                       | Attributes source                                                                                                                                                                                                                                          | Attributes transformations                                                                                                                          |
-|---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
-| Census Tracts       | [StatCan 2016 Census - Census Tracts Cartographic Boundary File](https://www12.statcan.gc.ca/census-recensement/2011/geo/bound-limit/bound-limit-2016-eng.cfm)                   | Extracted the census tracts falling within the City of Ottawa boundary and reprojected to WGS 84 UTM 18N       | [StatCan 2016 Census: Census metropolitan areas (CMAs), tracted census agglomerations (CAs) and census tracts (CTs)](https://www12.statcan.gc.ca/census-recensement/2016/dp-pd/prof/details/download-telecharger/comp/page_dl-tc.cfm?Lang=E&)              | Extracted the 'Population, 2016' data ('member ID 1') for the City of Ottawa census tracts and joined them to the census tracts geometry            |
-| Dissemination Areas | [StatCan 2016 Census - Dissemination Areas Cartographic Boundary File](https://www12.statcan.gc.ca/census-recensement/2011/geo/bound-limit/bound-limit-2016-eng.cfm)             | Extracted the dissemination areas falling within the City of Ottawa boundary and reprojected to WGS 84 UTM 18N | [Canada, provinces, territories, census divisions (CDs), census subdivisions (CSDs) and dissemination areas (DAs) - Ontario only](https://www12.statcan.gc.ca/census-recensement/2016/dp-pd/prof/details/download-telecharger/comp/page_dl-tc.cfm?Lang=E&) | Extracted the 'Population, 2016' data ('member ID 1) for the City of Ottawa dissemination areas and joined them to the dissemination areas geometry |
-| Neighborhoods       | [Ottawa Neighbourhood Study (ONS) - Neighbourhood Boundaries Gen 2](https://open.ottawa.ca/datasets/ottawa::ottawa-neighbourhood-study-ons-neighbourhood-boundaries-gen-2/about) | Reprojected to WGS 84 UTM 18N                                                                                  | [Ottawa Neighbourhood Study (ONS) - Neighbourhood Boundaries Gen 2](https://open.ottawa.ca/datasets/ottawa::ottawa-neighbourhood-study-ons-neighbourhood-boundaries-gen-2/about)                                                                           | Extracted the neighbourhood names ('NAMES') and estimated population fields ('POPEST')                                                              |
-| Landcover           | [Government of Canada - 2015 Land Cover of Canada](https://open.canada.ca/data/en/dataset/4e615eae-b90c-420b-adee-2ca35896caf6)                                                  | Clipped to the City of Ottawa's extent                                                                         |                                                                                                                                                                                                                                                            |                                                                                                                                                     |
-| Zoning              | [City of Ottawa - Zoning](https://data1-esrica-ncr.opendata.arcgis.com/datasets/esrica-ncr::city-of-ottawa-zoning/about?layer=3)                                                 | Reprojected to WGS 84 UTM 18N                                                                                  | [City of Ottawa - Zoning](https://data1-esrica-ncr.opendata.arcgis.com/datasets/esrica-ncr::city-of-ottawa-zoning/about?layer=3)                                                                                                                           | Extracted the main zones                                                                                                                            |
-| Synthetic Points    | John Foster (tutorial author)                                                                                                                                                    |                                                                                                                |                                                                                                                                                                                                                                                            |                                                                                                                                                     |
+|  	| Geometry source 	| Geometry transformations 	| Attributes source 	| Attributes transformations 	|
+|---	|---	|---	|---	|---	|
+| Census Tracts 	| [StatCan 2016 Census - Census Tracts Cartographic Boundary File](https://www12.statcan.gc.ca/census-recensement/2011/geo/bound-limit/bound-limit-2016-eng.cfm) 	| Extracted the census tracts falling within the City of Ottawa boundary and reprojected to WGS 84 UTM 18N 	| [StatCan 2016 Census: Census metropolitan areas (CMAs), tracted census agglomerations (CAs) and census tracts (CTs)](https://www12.statcan.gc.ca/census-recensement/2016/dp-pd/prof/details/download-telecharger/comp/page_dl-tc.cfm?Lang=E&) 	| Extracted the 'Population, 2016' data ('member ID 1') for the City of Ottawa census tracts and joined them to the census tracts geometry 	|
+| Dissemination Areas 	| [StatCan 2016 Census - Dissemination Areas Cartographic Boundary File](https://www12.statcan.gc.ca/census-recensement/2011/geo/bound-limit/bound-limit-2016-eng.cfm) 	| Extracted the dissemination areas falling within the City of Ottawa boundary and reprojected to WGS 84 UTM 18N 	| [Canada, provinces, territories, census divisions (CDs), census subdivisions (CSDs) and dissemination areas (DAs) - Ontario only](https://www12.statcan.gc.ca/census-recensement/2016/dp-pd/prof/details/download-telecharger/comp/page_dl-tc.cfm?Lang=E&) 	| Extracted the 'Population, 2016' data ('member ID 1) for the City of Ottawa dissemination areas and joined them to the dissemination areas geometry 	|
+| Neighborhoods 	| [Ottawa Neighbourhood Study (ONS) - Neighbourhood Boundaries Gen 2](https://open.ottawa.ca/datasets/ottawa::ottawa-neighbourhood-study-ons-neighbourhood-boundaries-gen-2/about) 	| Reprojected to WGS 84 UTM 18N 	| [Ottawa Neighbourhood Study (ONS) - Neighbourhood Boundaries Gen 2](https://open.ottawa.ca/datasets/ottawa::ottawa-neighbourhood-study-ons-neighbourhood-boundaries-gen-2/about) 	| Extracted the neighbourhood names ('NAMES') and estimated population fields ('POPEST') 	|
+| Landcover 	| [Government of Canada - 2015 Land Cover of Canada](https://open.canada.ca/data/en/dataset/4e615eae-b90c-420b-adee-2ca35896caf6) 	| Clipped to the City of Ottawa's extent 	|  	|  	|
+| Zoning 	| [City of Ottawa - Zoning](https://data1-esrica-ncr.opendata.arcgis.com/datasets/esrica-ncr::city-of-ottawa-zoning/about?layer=3) 	| Reprojected to WGS 84 UTM 18N 	| [City of Ottawa - Zoning](https://data1-esrica-ncr.opendata.arcgis.com/datasets/esrica-ncr::city-of-ottawa-zoning/about?layer=3) 	| Extracted the main zones 	|
+| Synthetic Points 	| John Foster (tutorial author) 	|  	|  	|  	|
