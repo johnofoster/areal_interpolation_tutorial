@@ -20,7 +20,7 @@ There are a couple of different ways to access this tutorial. If you wish to int
 
 ### Option 1: Non-Interactive Copy
 
-As mentioned, this tutorial was created as a student project for a Carleton University geomatics course. It has been converted to a MediaWiki page and uploaded [here](https://dges.carleton.ca/CUOSGwiki/index.php/Areal_Interpolation_in_Python_using_Tobler).
+As mentioned, this tutorial was created as a student project for a Carleton University geomatics course. It has been converted to a MediaWiki page and uploaded [here](https://dges.carleton.ca/CUOSGwiki/index.php/Areal_Interpolation_in_Python_Using_Tobler).
 
 
 ### Option 2: Run the Tutorial Through Binder 
