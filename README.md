@@ -1,4 +1,4 @@
-# Areal Interpolation in Python using Tobler - A Jupyter Notebook Tutorial
+# Areal Interpolation in Python Using Tobler - A Jupyter Notebook Tutorial
 
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/johnofoster/areal_interpolation_tutorial/HEAD)
 
